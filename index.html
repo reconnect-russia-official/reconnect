@@ -1,259 +1,226 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CORE:LINK — Интеллектуальный шлюз доступа к глобальным сервисам</title>
+    <title>CORE:LINK — Платежный шлюз доступа</title>
     
-    <meta name="description" content="Единый узел доступа к ChatGPT, Midjourney, Steam и Spotify из РФ. Проверка статуса серверов, мгновенная активация и безопасные транзакции через шифрованные шлюзы.">
-    <meta name="keywords" content="оплата зарубежных сервисов, доступ к нейросетям из рф, пополнение баланса игр, подписки 2026, личный кабинет global access">
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23000%22/><path d=%22M30 50 L50 30 L70 50 L50 70 Z%22 fill=%22%2300f2ff%22/></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23007bff%22/><path d=%22M30 50 L50 30 L70 50 L50 70 Z%22 fill=%22%23fff%22/></svg>">
 
     <style>
         :root {
-            --accent: #00f2ff;
-            --bg: #0a0a0c;
-            --card-bg: #141417;
-            --text: #e0e0e0;
-            --grad: linear-gradient(135deg, #00f2ff 0%, #0066ff 100%);
+            --bg-main: #0f1114; /* Цвет фона как на Oplata.info */
+            --bg-card: #191c21;
+            --accent: #007bff; /* Тот самый синий цвет Digiseller */
+            --text-main: #e1e1e1;
+            --text-muted: #8a9299;
+            --border: #2d3238;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            overflow-x: hidden;
+            line-height: 1.5;
         }
 
-        canvas#bg-dots {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
-        header {
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-weight: 900;
-            letter-spacing: 5px;
-            font-size: 22px;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .logo span { color: var(--accent); }
-
+        /* Верхняя информационная панель */
         .status-bar {
-            background: rgba(0, 242, 255, 0.05);
-            padding: 10px;
+            background: #16191d;
+            border-bottom: 1px solid var(--border);
+            padding: 8px 0;
             text-align: center;
             font-size: 11px;
-            letter-spacing: 1px;
-            color: var(--accent);
-            border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .pulse {
             display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
+            width: 6px;
+            height: 6px;
+            background: #28a745;
             border-radius: 50%;
-            margin-right: 5px;
-            box-shadow: 0 0 10px var(--accent);
-            animation: pulse-ring 1.5s infinite;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #28a745;
         }
 
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+        header {
+            background: var(--bg-card);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span { color: var(--accent); }
 
         .hero {
-            padding: 100px 20px;
+            padding: 60px 20px;
             text-align: center;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: clamp(32px, 5vw, 64px);
-            background: var(--grad);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-
-        .search-wrapper {
-            background: var(--card-bg);
-            padding: 5px;
-            border-radius: 50px;
-            display: flex;
-            max-width: 500px;
-            margin: 40px auto;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.3s;
-        }
-
-        .search-wrapper:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
-        }
-
-        .search-wrapper input {
-            background: transparent;
-            border: none;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 15px;
             color: #fff;
-            padding: 15px 25px;
-            flex-grow: 1;
-            outline: none;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* Контейнер оплаты (Центральный блок как на Oplata.info) */
+        .payment-container {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .payment-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .grid {
-            max-width: 1200px;
-            margin: 0 auto 100px;
+            max-width: 1000px;
+            margin: 0 auto 80px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
             padding: 0 20px;
         }
 
+        /* Стилизация карточек под блоки Oplata.info */
         .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid rgba(255,255,255,0.03);
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 25px;
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at top right, rgba(0, 242, 255, 0.1), transparent);
-            opacity: 0; transition: 0.4s;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(0, 242, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: var(--accent);
         }
-
-        .card:hover::before { opacity: 1; }
 
         .service-icon {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 20px;
-            object-fit: contain;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 15px;
         }
 
-        .card h3 { font-size: 22px; margin: 0 0 10px; color: #fff; position: relative; z-index: 1;}
-        .card p { color: #888; font-size: 14px; margin-bottom: 30px; position: relative; z-index: 1;}
+        .card h3 { 
+            font-size: 18px; 
+            margin: 0 0 10px; 
+            color: #fff;
+        }
 
+        .card p { 
+            color: var(--text-muted); 
+            font-size: 13px; 
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* Кнопки в стиле Oplata */
         .btn {
-            background: #fff;
-            color: #000;
+            background: #343a40;
+            color: #fff;
             text-decoration: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
-            transition: 0.3s;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 14px;
             text-align: center;
-            position: relative;
-            z-index: 1;
+            transition: 0.2s;
+            border: 1px solid transparent;
         }
 
         .btn:hover {
             background: var(--accent);
-            box-shadow: 0 0 20px var(--accent);
         }
 
-        /* Кастомизация кнопки Digiseller */
+        /* Прямая интеграция виджета */
         .digiseller-buy-standalone {
-            width: 100%;
-            margin-top: 10px;
+            padding: 20px;
         }
+
         .digiseller-buy-standalone input[type="button"] {
-            background: var(--grad) !important;
+            background: var(--accent) !important;
             border: none !important;
-            color: #000 !important;
-            padding: 15px !important;
-            border-radius: 12px !important;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-            font-size: 12px !important;
-            letter-spacing: 1px !important;
+            color: #fff !important;
+            padding: 14px !important;
+            border-radius: 4px !important;
+            font-weight: 600 !important;
+            font-size: 15px !important;
             width: 100% !important;
             cursor: pointer !important;
-            transition: 0.3s !important;
-        }
-        .digiseller-buy-standalone input[type="button"]:hover {
-            box-shadow: 0 0 20px var(--accent) !important;
-            opacity: 0.9;
+            transition: background 0.2s !important;
         }
 
+        .digiseller-buy-standalone input[type="button"]:hover {
+            background: #0069d9 !important;
+        }
+
+        /* Информационная лента */
         .live-feed {
-            max-width: 1200px;
-            margin: 0 auto 50px;
-            background: rgba(255,255,255,0.02);
-            border-radius: 15px;
-            padding: 20px;
-            font-size: 13px;
+            max-width: 900px;
+            margin: 40px auto;
+            background: #16191d;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 15px;
         }
 
         .feed-item {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            color: #666;
+            padding: 8px 0;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: var(--text-muted);
         }
 
-        .feed-item span.success { color: #00ff88; }
-
-        .reviews {
-            background: #000;
-            padding: 100px 20px;
-        }
-
-        .review-card {
-            background: #111;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
+        .success { color: #28a745; font-weight: bold; }
 
         footer {
-            padding: 50px;
+            padding: 40px;
             text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            background: #16191d;
+            border-top: 1px solid var(--border);
             font-size: 12px;
-            color: #444;
+            color: var(--text-muted);
         }
     </style>
 </head>
@@ -261,114 +228,79 @@
 
     <div class="status-bar">
         <span class="pulse"></span> 
-        СЕТЕВОЙ ПРОТОКОЛ АКТИВЕН: ШЛЮЗЫ РФ-ГЛОБАЛ СИНХРОНИЗИРОВАНЫ (2026.02.11)
+        Сессия защищена SSL-шифрованием | Текущий статус шлюза: Активен
     </div>
 
     <header>
         <a href="#" class="logo">CORE:<span>LINK</span></a>
-        <div style="font-size: 12px; opacity: 0.5;">SECURE CONNECTION: 256-BIT</div>
+        <div style="font-size: 12px; color: var(--text-muted);">
+            ID Партнера: 1438556
+        </div>
     </header>
 
     <div class="hero">
-        <h1>Интеллектуальный доступ к глобальным сервисам</h1>
-        <p>Бесшовная активация подписок и игровых аккаунтов. Официальный реселлинг через распределенную сеть узлов.</p>
-        
-        <div class="search-wrapper">
-            <input type="text" placeholder="Введите название сервиса (напр. Midjourney)...">
-            <div style="padding: 15px 25px; color: var(--accent); cursor: pointer; font-size: 14px;">ПОИСК</div>
-        </div>
+        <h1>Выберите сервис для оплаты</h1>
+        <p>Мгновенная доставка реквизитов и ключей доступа сразу после подтверждения транзакции.</p>
     </div>
 
-    <div class="live-feed" id="live-feed">
-        <div class="feed-item">
-            <span>ID 492***: Активация Steam (РФ)</span>
-            <span class="success">УСПЕШНО [0.4s]</span>
+    <div class="payment-container">
+        <div class="payment-header">
+            <div style="font-weight: 600;">ChatGPT Plus / OpenAI Official Access</div>
+            <div style="color: var(--accent); font-weight: bold;">от 299.00 ₽</div>
+        </div>
+        <div class="digiseller-buy-standalone" data-id="4371807" data-ai="1438556" data-img="0" data-name="0" data-price="1" data-no-price="0"></div>
+        <div style="padding: 15px 30px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border);">
+            * Оплата производится через защищенный шлюз Digiseller.
         </div>
     </div>
 
     <div class="grid">
         <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="service-icon" alt="ChatGPT">
-            <h3>Neural Network Access</h3>
-            <p>Прямой шлюз к ChatGPT Plus. Интеграция GPT-4o. Работа без ограничений по IP.</p>
-            
-            <div class="digiseller-buy-standalone" data-id="4371807" data-ai="1438556" data-img="0" data-name="0" data-price="1" data-no-price="0"></div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Steam_Logo.png" class="service-icon" alt="Steam">
+            <h3>Steam Bridge</h3>
+            <p>Пополнение баланса СНГ аккаунтов. Мгновенное зачисление через API.</p>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">Выбрать тариф</a>
         </div>
 
         <div class="card">
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" class="service-icon" alt="PSN">
             <h3>PlayStation Network</h3>
-            <p>Карты пополнения и подписки (Deluxe/Extra). Регионы: Турция, Украина, Индия, США.</p>
-            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ОТКРЫТЬ ДОСТУП</a>
-        </div>
-
-        <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Steam_Logo.png" class="service-icon" alt="Steam">
-            <h3>Steam Bridge</h3>
-            <p>Мгновенная балансировка кошелька. Поддержка всех регионов СНГ. Минимальные издержки.</p>
-            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ПОПОЛНИТЬ</a>
+            <p>Подписки PS Plus и пополнение кошелька (Турция/США/Польша).</p>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">Выбрать тариф</a>
         </div>
 
         <div class="card">
             <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" class="service-icon" alt="Spotify">
-            <h3>Audio Stream Pass</h3>
-            <p>Spotify Premium на ваш личный профиль. Индивидуальные и семейные планы.</p>
-            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">АКТИВИРОВАТЬ</a>
-        </div>
-
-        <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png" class="service-icon" alt="Midjourney">
-            <h3>Visual AI Engine</h3>
-            <p>Генерация изображений без лимитов. Оплата профессиональных тарифов.</p>
-            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ПОДКЛЮЧИТЬ</a>
-        </div>
-
-        <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" class="service-icon" alt="YouTube Premium">
-            <h3>YT Premium Node</h3>
-            <p>Отключение рекламы и фоновое прослушивание. Подключение через семейные группы.</p>
-            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ПОЛУЧИТЬ ДОСТУП</a>
+            <h3>Spotify Premium</h3>
+            <p>Индивидуальные и семейные подписки. Активация на ваш аккаунт.</p>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">Выбрать тариф</a>
         </div>
     </div>
 
-    <div class="reviews">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <h2 style="text-align: center; margin-bottom: 50px;">ОТЧЕТЫ ОБ ИСПОЛНЕНИИ</h2>
-            
-            <div class="review-card">
-                <div style="color: var(--accent); margin-bottom: 10px;">★★★★★</div>
-                <p>"Транзакция по Steam прошла мгновенно. Шлюз CORE:LINK стабилен. Благодарю за сервис."</p>
-                <div style="font-size: 12px; opacity: 0.4;">User_8821 | Digiseller Verified</div>
-            </div>
-
-            <div class="review-card">
-                <div style="color: var(--accent); margin-bottom: 10px;">★★★★★</div>
-                <p>"ChatGPT Plus активирован за 3 минуты. Техподдержка помогла с переносом данных. Рекомендую."</p>
-                <div style="font-size: 12px; opacity: 0.4;">AI_Analyst | Digiseller Verified</div>
-            </div>
+    <div class="live-feed" id="live-feed">
+        <div class="feed-item">
+            <span>Транзакция #9821*** завершена (Steam)</span>
+            <span class="success">ОПЛАЧЕНО</span>
         </div>
     </div>
 
     <footer>
-        <p>CORE:LINK NODE-X // DECENTRALIZED ACCESS PROTOCOL</p>
-        <p>Все операции защищены алгоритмом RSA-4096. Мы являемся официальным партнером торговой площадки Digiseller.</p>
+        <p>&copy; 2026 CORE:LINK. Официальный партнер Digiseller / Plati.market</p>
+        <p style="margin-top: 10px; opacity: 0.5;">Все товарные знаки принадлежат их законным владельцам.</p>
     </footer>
 
     <script>
-        // ЖИВАЯ ЛЕНТА
         const feed = document.getElementById('live-feed');
-        const services = ['Steam', 'ChatGPT', 'PSN', 'Spotify Premium', 'Midjourney', 'Xbox Game Pass'];
-        
+        const services = ['Steam', 'ChatGPT', 'PSN', 'Spotify', 'Midjourney'];
         setInterval(() => {
-            const id = Math.floor(Math.random() * 900) + 100;
+            const id = Math.floor(Math.random() * 9000) + 1000;
             const service = services[Math.floor(Math.random() * services.length)];
             const item = document.createElement('div');
             item.className = 'feed-item';
-            item.innerHTML = `<span>ID ${id}***: Активация ${service}</span><span class="success">УСПЕШНО [${(Math.random() * 0.8).toFixed(2)}s]</span>`;
-            
+            item.innerHTML = `<span>Транзакция #${id}*** завершена (${service})</span><span class="success">ОПЛАЧЕНО</span>`;
             feed.prepend(item);
-            if (feed.children.length > 5) feed.lastChild.remove();
-        }, 4000);
+            if (feed.children.length > 3) feed.lastChild.remove();
+        }, 5000);
     </script>
 
     <script>!function(e){var l=function(l){return e.cookie.match(new RegExp("(?:^|; )digiseller-"+l+"=([^;]*)"))},i=l("lang"),s=l("cart_uid"),t=i?"&lang="+i[1]:"",d=s?"&cart_uid="+s[1]:"",r=e.getElementsByTagName("head")[0]||e.documentElement,n=e.createElement("link"),a=e.createElement("script");n.type="text/css",n.rel="stylesheet",n.id="digiseller-css",n.href="//shop.digiseller.com/xml/store2_css.asp?seller_id=1438556",a.async=!0,a.id="digiseller-js",a.src="//digiseller.com/store2/digiseller-api.js.asp?seller_id=1438556"+t+d,!e.getElementById(n.id)&&r.appendChild(n),!e.getElementById(a.id)&&r.appendChild(a)}(document);</script>
