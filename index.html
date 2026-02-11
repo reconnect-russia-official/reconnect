@@ -27,7 +27,6 @@
             overflow-x: hidden;
         }
 
-        /* КРЮЧОК 1: АНИМИРОВАННЫЙ ФОН */
         canvas#bg-dots {
             position: fixed;
             top: 0;
@@ -58,7 +57,6 @@
 
         .logo span { color: var(--accent); }
 
-        /* КРЮЧОК 2: МОНИТОР СТАТУСА */
         .status-bar {
             background: rgba(0, 242, 255, 0.05);
             padding: 10px;
@@ -101,7 +99,6 @@
             font-weight: 800;
         }
 
-        /* КРЮЧОК 3: ИНТЕРАКТИВНЫЙ ПОИСК */
         .search-wrapper {
             background: var(--card-bg);
             padding: 5px;
@@ -127,7 +124,6 @@
             outline: none;
         }
 
-        /* КОНТЕЙНЕР С КАРТОЧКАМИ */
         .grid {
             max-width: 1200px;
             margin: 0 auto 100px;
@@ -170,11 +166,11 @@
             width: 50px;
             height: 50px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
+            object-fit: contain;
         }
 
-        .card h3 { font-size: 22px; margin: 0 0 10px; color: #fff; }
-        .card p { color: #888; font-size: 14px; margin-bottom: 30px; }
+        .card h3 { font-size: 22px; margin: 0 0 10px; color: #fff; position: relative; z-index: 1;}
+        .card p { color: #888; font-size: 14px; margin-bottom: 30px; position: relative; z-index: 1;}
 
         .btn {
             background: #fff;
@@ -197,7 +193,30 @@
             box-shadow: 0 0 20px var(--accent);
         }
 
-        /* КРЮЧОК 4: ЖИВАЯ ЛЕНТА СОБЫТИЙ */
+        /* Кастомизация кнопки Digiseller */
+        .digiseller-buy-standalone {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .digiseller-buy-standalone input[type="button"] {
+            background: var(--grad) !important;
+            border: none !important;
+            color: #000 !important;
+            padding: 15px !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            font-size: 12px !important;
+            letter-spacing: 1px !important;
+            width: 100% !important;
+            cursor: pointer !important;
+            transition: 0.3s !important;
+        }
+        .digiseller-buy-standalone input[type="button"]:hover {
+            box-shadow: 0 0 20px var(--accent) !important;
+            opacity: 0.9;
+        }
+
         .live-feed {
             max-width: 1200px;
             margin: 0 auto 50px;
@@ -217,7 +236,6 @@
 
         .feed-item span.success { color: #00ff88; }
 
-        /* ОТЗЫВЫ */
         .reviews {
             background: #000;
             padding: 100px 20px;
@@ -270,45 +288,46 @@
 
     <div class="grid">
         <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="logo" alt="ChatGPT">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="service-icon" alt="ChatGPT">
             <h3>Neural Network Access</h3>
             <p>Прямой шлюз к ChatGPT Plus. Интеграция GPT-4o. Работа без ограничений по IP.</p>
-            <a href="ТВОЯ_ССЫЛКА_DIGISELLER" class="btn">ПОДКЛЮЧИТЬ УЗЕЛ</a>
+            
+            <div class="digiseller-buy-standalone" data-id="4371807" data-ai="1438556" data-img="0" data-name="0" data-price="1" data-no-price="0"></div>
         </div>
 
-        <div class="card" style="border-color: rgba(0, 106, 255, 0.2);">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" class="logo" alt="PSN">
+        <div class="card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" class="service-icon" alt="PSN">
             <h3>PlayStation Network</h3>
             <p>Карты пополнения и подписки (Deluxe/Extra). Регионы: Турция, Украина, Индия, США.</p>
-            <a href="ТВОЯ_ССЫЛКА_DIGISELLER" class="btn">ОТКРЫТЬ ДОСТУП</a>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ОТКРЫТЬ ДОСТУП</a>
         </div>
 
         <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Steam_Logo.png" class="logo" alt="Steam">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Steam_Logo.png" class="service-icon" alt="Steam">
             <h3>Steam Bridge</h3>
             <p>Мгновенная балансировка кошелька. Поддержка всех регионов СНГ. Минимальные издержки.</p>
-            <a href="ТВОЯ_ССЫЛКА_DIGISELLER" class="btn">ПОПОЛНИТЬ</a>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ПОПОЛНИТЬ</a>
         </div>
 
         <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" class="logo" alt="Spotify">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" class="service-icon" alt="Spotify">
             <h3>Audio Stream Pass</h3>
             <p>Spotify Premium на ваш личный профиль. Индивидуальные и семейные планы.</p>
-            <a href="ТВОЯ_ССЫЛКА_DIGISELLER" class="btn">АКТИВИРОВАТЬ</a>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">АКТИВИРОВАТЬ</a>
         </div>
 
         <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png" class="logo" alt="Midjourney">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png" class="service-icon" alt="Midjourney">
             <h3>Visual AI Engine</h3>
             <p>Генерация изображений без лимитов. Оплата профессиональных тарифов.</p>
-            <a href="ТВОЯ_ССЫЛКА_DIGISELLER" class="btn">ПОДКЛЮЧИТЬ</a>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ПОДКЛЮЧИТЬ</a>
         </div>
 
         <div class="card">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" class="logo" alt="YouTube Premium">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" class="service-icon" alt="YouTube Premium">
             <h3>YT Premium Node</h3>
             <p>Отключение рекламы и фоновое прослушивание. Подключение через семейные группы.</p>
-            <a href="ТВОЯ_ССЫЛКА_DIGISELLER" class="btn">ПОЛУЧИТЬ ДОСТУП</a>
+            <a href="https://plati.market/itm/4371807?ai=1438556" class="btn">ПОЛУЧИТЬ ДОСТУП</a>
         </div>
     </div>
 
@@ -333,10 +352,10 @@
     <footer>
         <p>CORE:LINK NODE-X // DECENTRALIZED ACCESS PROTOCOL</p>
         <p>Все операции защищены алгоритмом RSA-4096. Мы являемся официальным партнером торговой площадки Digiseller.</p>
-    </div>
+    </footer>
 
     <script>
-        // ЖИВАЯ ЛЕНТА (Крючок удержания)
+        // ЖИВАЯ ЛЕНТА
         const feed = document.getElementById('live-feed');
         const services = ['Steam', 'ChatGPT', 'PSN', 'Spotify Premium', 'Midjourney', 'Xbox Game Pass'];
         
@@ -351,22 +370,19 @@
             if (feed.children.length > 5) feed.lastChild.remove();
         }, 4000);
     </script>
-        <script>!function(e){var l=function(l){return e.cookie.match(new RegExp("(?:^|; )digiseller-"+l+"=([^;]*)"))},i=l("lang"),s=l("cart_uid"),t=i?"&lang="+i[1]:"",d=s?"&cart_uid="+s[1]:"",r=e.getElementsByTagName("head")[0]||e.documentElement,n=e.createElement("link"),a=e.createElement("script");n.type="text/css",n.rel="stylesheet",n.id="digiseller-css",n.href="//shop.digiseller.com/xml/store2_css.asp?seller_id=1438556",a.async=!0,a.id="digiseller-js",a.src="//digiseller.com/store2/digiseller-api.js.asp?seller_id=1438556"+t+d,!e.getElementById(n.id)&&r.appendChild(n),!e.getElementById(a.id)&&r.appendChild(a)}(document);</script>
-				
 
-<div style="display: inline-block;" class="digiseller-buy-standalone" data-id="4371807" data-ai="1438556" data-img="1" data-img-size="180" data-name="1" data-price="1" data-no-price="0"></div>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106786939', 'ym');
+    <script>!function(e){var l=function(l){return e.cookie.match(new RegExp("(?:^|; )digiseller-"+l+"=([^;]*)"))},i=l("lang"),s=l("cart_uid"),t=i?"&lang="+i[1]:"",d=s?"&cart_uid="+s[1]:"",r=e.getElementsByTagName("head")[0]||e.documentElement,n=e.createElement("link"),a=e.createElement("script");n.type="text/css",n.rel="stylesheet",n.id="digiseller-css",n.href="//shop.digiseller.com/xml/store2_css.asp?seller_id=1438556",a.async=!0,a.id="digiseller-js",a.src="//digiseller.com/store2/digiseller-api.js.asp?seller_id=1438556"+t+d,!e.getElementById(n.id)&&r.appendChild(n),!e.getElementById(a.id)&&r.appendChild(a)}(document);</script>
 
-    ym(106786939, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/106786939" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106786939', 'ym');
+        ym(106786939, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/106786939" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
 </body>
 </html>
